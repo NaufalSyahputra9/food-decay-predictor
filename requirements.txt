@@ -1,0 +1,18 @@
+torch==2.2.0 \
+torchvision==0.17.0 
+fastapi
+uvicorn[standard]==0.28.0 
+gradio==4.26.0 
+sqlalchemy==2.0.28 
+# ORM untuk SQLite 
+alembic==1.13.1 
+# migrasi schema 
+python-multipart==0.0.9 
+pillow
+clip @ git+https://github.com/openai/CLIP.git 
+huggingface-hub==0.22.2 
+pydantic
+python-dotenv==1.0.1 
+numpy
+opencv-python-headless==4.9.0.80 
+aiofiles==23.2.1
