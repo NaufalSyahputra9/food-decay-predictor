@@ -16,3 +16,4 @@ python-dotenv==1.0.1
 numpy
 opencv-python-headless==4.9.0.80 
 aiofiles==23.2.1
+alembic
