@@ -1,4 +1,3 @@
-# api/db/crud.py
 from sqlalchemy.orm import Session
 from sqlalchemy import asc
 import uuid
@@ -7,7 +6,6 @@ from api.db import models
 from api import schemas
 
 def create_session(db: Session, session_data: schemas.FoodSessionCreate, is_known: bool = True):
-    """Membuat sesi makanan baru (Langkah P2/P3)."""
     db_session = models.FoodSession(
         id=str(uuid.uuid4()),
         food_label=session_data.food_label,
@@ -20,7 +18,6 @@ def create_session(db: Session, session_data: schemas.FoodSessionCreate, is_know
     return db_session
 
 def save_snapshot(db: Session, snapshot_data: schemas.SnapshotUpload, photo_path: str):
-    """Menyimpan metadata foto harian (Langkah P1)."""
     db_snapshot = models.DailySnapshot(
         id=str(uuid.uuid4()),
         session_id=snapshot_data.session_id,
@@ -33,7 +30,6 @@ def save_snapshot(db: Session, snapshot_data: schemas.SnapshotUpload, photo_path
     return db_snapshot
 
 def save_feature(db: Session, snapshot_id: str, feature_data: bytes, feature_type: str, shape_info: dict):
-    """Menyimpan feature map (CNN/CLIP) dalam bentuk bytes (Langkah P6)."""
     db_feature = models.FeatureCache(
         id=str(uuid.uuid4()),
         snapshot_id=snapshot_id,
@@ -47,10 +43,6 @@ def save_feature(db: Session, snapshot_id: str, feature_data: bytes, feature_typ
     return db_feature
 
 def get_sequence(db: Session, session_id: str):
-    """
-    Menarik riwayat feature map secara berurutan untuk ConvLSTM (Langkah P4).
-    Menggabungkan tabel FeatureCache dan DailySnapshot berdasarkan snapshot_id.
-    """
     results = db.query(models.FeatureCache)\
                 .join(models.DailySnapshot, models.FeatureCache.snapshot_id == models.DailySnapshot.id)\
                 .filter(models.DailySnapshot.session_id == session_id)\
@@ -59,7 +51,6 @@ def get_sequence(db: Session, session_id: str):
     return results
 
 def save_prediction(db: Session, session_id: str, days: float, status: str, confidence: float, curve: list = None):
-    """Menyimpan hasil akhir prediksi ConvLSTM ke database (Langkah P6)."""
     db_prediction = models.Prediction(
         id=str(uuid.uuid4()),
         session_id=session_id,
@@ -72,3 +63,7 @@ def save_prediction(db: Session, session_id: str, days: float, status: str, conf
     db.commit()
     db.refresh(db_prediction)
     return db_prediction
+
+# Tambahkan ini di bagian bawah crud.py
+def get_food_session(db: Session, session_id: str):
+    return db.query(models.FoodSession).filter(models.FoodSession.id == session_id).first()

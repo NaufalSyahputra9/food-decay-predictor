@@ -1,0 +1,5 @@
+{
+  "energy_threshold": -3.0129191,
+  "n_classes": 4,
+  "class_names": ["avocado", "banana", "pear", "tomato"]
+}

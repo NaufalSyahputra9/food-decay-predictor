@@ -1,17 +1,23 @@
-FROM python:3.11-slim AS builder 
+FROM python:3.10-slim
 
-WORKDIR /build 
-COPY requirements.txt . 
-RUN pip install --no-cache-dir --user -r requirements.txt 
-FROM python:3.11-slim AS runner 
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
 
-WORKDIR /app 
-COPY --from=builder /root/.local /root/.local 
-COPY . . 
+WORKDIR $HOME/app
 
-ENV PATH=/root/.local/bin:$PATH 
-ENV PYTHONUNBUFFERED=1 
-ENV DATABASE_URL=sqlite:////app/data/shelflife.db 
-RUN mkdir -p /app/data # pastikan folder data ada 
-EXPOSE 7860 
-CMD ["python", "app/app.py"]
+# Copy requirements dan install
+COPY --chown=user requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY --chown=user . .
+
+# Beri izin eksekusi ke start.sh
+RUN chmod +x start.sh
+
+# Port publik
+EXPOSE 7860
+
+# Jalankan script
+CMD ["./start.sh"]

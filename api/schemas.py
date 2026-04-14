@@ -1,4 +1,3 @@
-# api/schemas.py
 from pydantic import BaseModel, ConfigDict, Field
 from typing import List, Optional
 
@@ -18,5 +17,5 @@ class PredictionResult(BaseModel):
     freshness_status: str
     confidence: float
     decay_curve: Optional[List[float]] = None
-
+    food_label: Optional[str] = None
     model_config = ConfigDict(from_attributes=True)

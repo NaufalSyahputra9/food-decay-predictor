@@ -1,0 +1,13 @@
+{
+  "in_channels": 136,
+  "hidden1": 16,
+  "hidden2": 8,
+  "window_size": 3,
+  "feat_h": 14,
+  "feat_w": 14,
+  "best_fold_mae": 0.0584,
+  "kfold_mean_mae": 0.0874,
+  "kfold_std_mae": 0.0182,
+  "n_classes": 4,
+  "n_folds": 5
+}

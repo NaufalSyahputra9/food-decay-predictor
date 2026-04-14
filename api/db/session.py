@@ -5,10 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./data/shelflife.db"
 
-# Pastikan folder data/ eksis
 os.makedirs(os.path.dirname(SQLALCHEMY_DATABASE_URL.replace("sqlite:///", "")), exist_ok=True)
 
-# Engine SQLite (check_same_thread=False WAJIB untuk FastAPI)
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
@@ -22,3 +20,4 @@ def get_db():
         yield db
     finally:
         db.close()
+

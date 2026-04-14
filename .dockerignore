@@ -1,4 +1,22 @@
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+
+data/uploads/* !data/uploads/.gitkeep  # (Opsional) Biarkan folder kosongnya tetap terbentuk
+.gradio/
+.pytest_cache/
+.ruff_cache/
+
+.git/
+.github/
+docker-compose.yaml
+
 notebook/
-data/raw/
-scripts/
-weights/
+*.ipynb
+README.md
+
+*.db
+*.sqlite3
+shelflife.db
