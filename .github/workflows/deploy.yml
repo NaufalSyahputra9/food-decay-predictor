@@ -35,4 +35,4 @@ jobs:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_REPO_ID: ${{ secrets.HF_REPO_ID }}
         run: |
-          huggingface-cli upload $HF_REPO_ID . . --repo-type=space --token=$HF_TOKEN
+          hf upload $HF_REPO_ID . . --repo-type=space --token=$HF_TOKEN
