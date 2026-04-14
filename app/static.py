@@ -1,3 +1,6 @@
+import os
+os.environ["NO_PROXY"] = "localhost,127.0.0.1,::1"
+
 import gradio as gr
 import requests
 import matplotlib.pyplot as plt
