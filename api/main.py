@@ -10,10 +10,12 @@ from fastapi.staticfiles import StaticFiles
 import gradio as gr
 from app.static import demo
 
-from api.db.session import get_db
+from api.db.session import get_db, engine
 from api.db import crud, models
 from api import schemas
 from models.pipeline import extract_features, predict_sequence, _get_models
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="ChronoFood API", version="1.0")
 
