@@ -7,6 +7,8 @@ import numpy as np
 import torch
 import uuid 
 from fastapi.staticfiles import StaticFiles
+import gradio as gr
+from app.static import demo
 
 from api.db.session import get_db
 from api.db import crud, models
@@ -175,7 +177,7 @@ async def get_session_history(session_id: str, db: Session = Depends(get_db)):
         url_path = snap.photo_path.replace("data/uploads", "/uploads").replace("\\", "/")
         history_data.append({
             "day": snap.day_index + 1, #
-            "image_url": f"http://127.0.0.1:8000{url_path}",
+            "image_url": f"http://127.0.0.1:7860{url_path}",
             "captured_at": snap.captured_at
         })
         
@@ -185,3 +187,10 @@ async def get_session_history(session_id: str, db: Session = Depends(get_db)):
         "total_days": len(history_data),
         "history": history_data
     }
+
+app = gr.mount_gradio_app(app, demo, path="/")
+
+if __name__ == "__main__":
+    import uvicorn
+    # Jalankan keseluruhan aplikasi (API + UI) di satu port
+    uvicorn.run(app, host="0.0.0.0", port=7860)

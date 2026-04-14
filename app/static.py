@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 from io import BytesIO
 
-API_BASE_URL = "http://127.0.0.1:8000"
+API_BASE_URL = "http://127.0.0.1:7860"
 
 def fetch_all_sessions():
     try:
@@ -175,6 +175,3 @@ with gr.Blocks(theme=theme) as demo:
         inputs=None, 
         outputs=[img_in, sess_in, status_out, gallery_out, plot_out]
     )
-
-if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=7860, share=True)
