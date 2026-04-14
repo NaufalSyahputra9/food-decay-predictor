@@ -11,9 +11,6 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          lfs: true
 
       - name: Build Docker Image
         run: docker build -t hf-space-app .
@@ -24,16 +21,18 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          fetch-depth: 0
-          lfs: true
+          python-version: "3.10"
+
+      - name: Install Hugging Face CLI
+        run: pip install huggingface_hub
 
       - name: Push to Hugging Face
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           HF_REPO_ID: ${{ secrets.HF_REPO_ID }}
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "GitHub Actions Bot"
-          git remote add space https://NaufalSyahputra:$HF_TOKEN@huggingface.co/spaces/$HF_REPO_ID
-          git push --force space main:main
+          huggingface-cli upload $HF_REPO_ID . . --repo-type=space --token=$HF_TOKEN
