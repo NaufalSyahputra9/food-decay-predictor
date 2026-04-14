@@ -1,8 +1,8 @@
 torch==2.2.0 
 torchvision==0.17.0 
-fastapi
-uvicorn[standard]==0.28.0 
-gradio>=4.44.1
+fastapi==0.109.2
+uvicorn==0.27.1
+gradio==4.16.0
 sqlalchemy==2.0.28 
 # ORM untuk SQLite 
 alembic==1.13.1 
