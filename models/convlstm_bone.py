@@ -3,10 +3,6 @@ import torch
 import torch.nn as nn
 
 class ConvLSTMCell(nn.Module):
-    """
-    Operasi matrix multiply diganti Conv2d
-    agar struktur spasial [H, W] dari feature map tetap terjaga
-    """
     def __init__(self, in_channels: int, hidden_channels: int, kernel_size: int = 3):
         super().__init__()
         self.hidden_channels = hidden_channels
@@ -22,11 +18,7 @@ class ConvLSTMCell(nn.Module):
         )
 
     def forward(self, x: torch.Tensor, h: torch.Tensor, c: torch.Tensor):
-        """
-        x : [B, in_channels, H, W]   — input frame saat ini
-        h : [B, hidden_channels, H, W] — hidden state sebelumnya
-        c : [B, hidden_channels, H, W] — cell state sebelumnya
-        """
+
         gates       = self.conv(torch.cat([x, h], dim=1))
         i, f, o, g = torch.chunk(gates, 4, dim=1)
 
@@ -35,7 +27,6 @@ class ConvLSTMCell(nn.Module):
         return h_new, c_new
 
     def init_hidden(self, B: int, H: int, W: int, device: torch.device):
-        """Inisialisasi hidden & cell state dengan zeros"""
         def z(): 
             return torch.zeros(B, self.hidden_channels, H, W, device=device)
             
@@ -43,10 +34,6 @@ class ConvLSTMCell(nn.Module):
 
 
 class ShelfLifePredictor(nn.Module):
-    """
-    Input  : [B, T, C, H, W] — sekuens feature maps dari backbone OSR
-    Output : [B, 1]           — prediksi hari tersisa (float, non-negatif)
-    """
     def __init__(self, in_channels: int, hidden1: int = 16, hidden2: int = 8):
         super().__init__()
         self.cell1 = ConvLSTMCell(in_channels, hidden1)

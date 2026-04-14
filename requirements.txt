@@ -11,9 +11,9 @@ python-multipart==0.0.9
 pillow
 clip @ git+https://github.com/openai/CLIP.git 
 huggingface-hub==0.22.2 
-pydantic
 python-dotenv==1.0.1 
-numpy
 opencv-python-headless==4.9.0.80 
 aiofiles==23.2.1
 alembic
+numpy<2.0.0
+pydantic<2.9.0
