@@ -34,7 +34,7 @@ def handle_predict(image_path, session_id):
     with open(image_path, "rb") as img_file:
         files = {"file": ("img.jpg", img_file, "image/jpeg")}
         try:
-            res = requests.post(f"{API_BASE_URL}/predict", data=data, files=files, timeout=60)
+            res = requests.post(f"{API_BASE_URL}/predict", data=data, files=files, timeout=300)
             result = res.json()
             
             if res.status_code != 200:
@@ -156,7 +156,7 @@ with gr.Blocks(theme=theme) as demo:
             datatype=["str", "str", "str"],
             label="Semua Sesi Tersimpan",
             interactive=False, 
-            value=fetch_all_sessions()
+            value=fetch_all_sessions
         )
     
     # Trigger predict
