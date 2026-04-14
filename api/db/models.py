@@ -1,5 +1,5 @@
 # api/db/models.py — SQLAlchemy + SQLite
-from sqlalchemy import Column, String, Integer, Float, Boolean, LargeBinary, DateTime, JSON
+from sqlalchemy import Column, String, Integer, Float, Boolean, LargeBinary, JSON
 from sqlalchemy.orm import DeclarativeBase
 import uuid
 import datetime

@@ -1,26 +1,30 @@
 # Arsitektur pipeline utama untuk ekstraksi fitur dan prediksi sisa usia simpan makanan.
 import torch
 from torchvision import transforms
-from torchvision.models import efficientnet_b3, EfficientNet_B3_Weights
 from PIL import Image
-import sys, os, json
+import sys
+import os
+import json
+
+from models.open_set   import OpenSetClassifier # noqa: E402
+from models.clip_adapter import ZeroShotIdentifier # noqa: E402
+from models.convlstm_bone   import ShelfLifePredictor # noqa: E402
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
-from models.open_set   import OpenSetClassifier
-from models.clip_adapter import ZeroShotIdentifier
-from models.convlstm_bone   import ShelfLifePredictor
-
 def _load_models(device: torch.device):
     osr_cfg_path = os.path.join(BASE_DIR, "weights", "osr_config.json")
-    with open(osr_cfg_path) as f: osr_cfg = json.load(f)
+    with open(osr_cfg_path) as f: 
+        osr_cfg = json.load(f)
 
     clstm_cfg_path = os.path.join(BASE_DIR, "weights", "convlstm_config.json")
-    with open(clstm_cfg_path) as f: clstm_cfg = json.load(f)
+    with open(clstm_cfg_path) as f: 
+        clstm_cfg = json.load(f)
 
     candidates_path = os.path.join(BASE_DIR, "models", "candidates.json")
-    with open(candidates_path) as f: kandidat_asing = json.load(f)["kandidat_asing"]
+    with open(candidates_path) as f: 
+        kandidat_asing = json.load(f)["kandidat_asing"]
 
     osr_weights = os.path.join(BASE_DIR, "weights", "opensetv5.pt")
     osr_model   = OpenSetClassifier(n_classes=osr_cfg["n_classes"], energy_threshold=osr_cfg["energy_threshold"]).to(device)
@@ -53,13 +57,17 @@ def _get_models(device):
     return _MODEL_CACHE
 
 def _get_status(days: float) -> str:
-    if days > 5:  return "fresh"
-    if days > 2:  return "caution"
+    if days > 5:  
+        return "fresh"
+    if days > 2:  
+        return "caution"
     return "warning"
 
 def _get_recommendation(days: float) -> str:
-    if days > 5:  return f"Masih segar, sisa sekitar {days:.1f} hari."
-    if days > 2:  return f"Segera konsumsi dalam {days:.1f} hari ke depan."
+    if days > 5:  
+        return f"Masih segar, sisa sekitar {days:.1f} hari."
+    if days > 2:  
+        return f"Segera konsumsi dalam {days:.1f} hari ke depan."
     return "Konsumsi hari ini, batas kelayakan hampir habis."
 
 def extract_features(image_path: str) -> dict:

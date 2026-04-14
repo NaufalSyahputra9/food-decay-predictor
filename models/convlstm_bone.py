@@ -4,8 +4,8 @@ import torch.nn as nn
 
 class ConvLSTMCell(nn.Module):
     """
-    Satu sel ConvLSTM. Operasi matrix multiply diganti Conv2d
-    agar struktur spasial [H, W] dari feature map tetap terjaga.
+    Operasi matrix multiply diganti Conv2d
+    agar struktur spasial [H, W] dari feature map tetap terjaga
     """
     def __init__(self, in_channels: int, hidden_channels: int, kernel_size: int = 3):
         super().__init__()
@@ -35,20 +35,17 @@ class ConvLSTMCell(nn.Module):
         return h_new, c_new
 
     def init_hidden(self, B: int, H: int, W: int, device: torch.device):
-        """Inisialisasi hidden & cell state dengan zeros."""
-        z = lambda: torch.zeros(B, self.hidden_channels, H, W, device=device)
+        """Inisialisasi hidden & cell state dengan zeros"""
+        def z(): 
+            return torch.zeros(B, self.hidden_channels, H, W, device=device)
+            
         return z(), z()
 
 
 class ShelfLifePredictor(nn.Module):
     """
-    Stack 2 layer ConvLSTM + regression head.
-
     Input  : [B, T, C, H, W] — sekuens feature maps dari backbone OSR
     Output : [B, 1]           — prediksi hari tersisa (float, non-negatif)
-
-    Ukuran model sengaja kecil (hidden1=16, hidden2=8, ~15K params)
-    agar tidak overfit pada dataset kecil.
     """
     def __init__(self, in_channels: int, hidden1: int = 16, hidden2: int = 8):
         super().__init__()

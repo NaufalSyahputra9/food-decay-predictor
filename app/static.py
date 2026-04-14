@@ -67,7 +67,7 @@ def handle_predict(image_path, session_id):
                     img_res = requests.get(item['image_url'])
                     if img_res.status_code == 200:
                         gallery_imgs.append((Image.open(BytesIO(img_res.content)), f"Hari {item['day']}"))
-                except:
+                except Exception as e:
                     continue
 
             status_txt = f"✅ SESSION ID: {curr_id}\n"
