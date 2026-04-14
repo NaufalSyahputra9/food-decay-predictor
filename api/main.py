@@ -23,7 +23,7 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 _get_models(torch.device("cuda" if torch.cuda.is_available() else "cpu"))
 
 @app.post("/predict", response_model=schemas.PredictionResult)
-async def predict_shelflife(
+def predict_shelflife(
     file: UploadFile = File(...),
     session_id: str = Form(None, description="Kosongkan jika hari pertama"),
     storage_type: str = Form("room_temp"),
@@ -149,7 +149,7 @@ async def predict_shelflife(
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 @app.get("/sessions") 
-async def get_all_sessions(db: Session = Depends(get_db)):
+def get_all_sessions(db: Session = Depends(get_db)):
     """Mengambil semua sesi yang pernah dibuat di database."""
     sessions = db.query(models.FoodSession).order_by(models.FoodSession.start_date.desc()).all()
     
@@ -164,7 +164,7 @@ async def get_all_sessions(db: Session = Depends(get_db)):
     return data_aman
 
 @app.get("/session/{session_id}/history")
-async def get_session_history(session_id: str, db: Session = Depends(get_db)):
+def get_session_history(session_id: str, db: Session = Depends(get_db)):
     """Mengambil riwayat foto dan status sebuah sesi untuk ditampilkan di UI."""
     db_session = crud.get_food_session(db, session_id)
     if not db_session:
