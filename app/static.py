@@ -128,7 +128,7 @@ theme = gr.themes.Soft(
     button_primary_text_color="#FFFFFF",
 )
 
-with gr.Blocks() as demo:
+with gr.Blocks(theme=theme) as demo:
     gr.Markdown("# Food Decay Prediction 🍎🕒")
     gr.Markdown("Description in english : This app predicts the shelf life of food items based on daily photos. Upload a photo of your food, and the AI will analyze its freshness over time, providing insights on how long it will remain safe to consume. Perfect for reducing food waste and making informed decisions about your groceries!")
     
@@ -175,4 +175,4 @@ with gr.Blocks() as demo:
     )
 
 if __name__ == "__main__":
-    demo.launch(server_name="0.0.0.0", server_port=7860, theme=theme)
+    demo.launch(server_name="0.0.0.0", server_port=7860)
